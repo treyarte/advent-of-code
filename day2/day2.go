@@ -46,14 +46,17 @@ RockPaperScissorGame
 
 var pl = fmt.Println
 
-var totalScore int
+var totalScorePartOne int
+var totalScorePartTwo int
 
 func main() {
-	totalScore = 0
+	totalScorePartOne = 0
+	totalScorePartTwo = 0
 	
 	ReadFile()
 
-	pl(totalScore)
+	// pl(totalScorePartOne)
+	pl(totalScorePartTwo)
 }
 
 func OnError(err error) {
@@ -77,15 +80,93 @@ func ReadFile() {
 		enemyInput := arr[0]
 		playerInput := arr[1]
 
-		totalScore += RockPaperScissorGame(enemyInput, playerInput)
+		// totalScorePartOne += normalRockPaperScissors(enemyInput, playerInput)
+		totalScorePartTwo += RockPaperScissorGame(enemyInput, playerInput)
 	 }
 }
 
 func RockPaperScissorGame(enemyInput string, playerInput string) (int) {
+	pl(playerInput)
 	const (
 		Win int = 6
 		Lose    = 0
 		Draw    = 3
+	)
+
+	const (
+		rock int =  1
+		paper = 2
+		scissors = 3
+	)
+	
+	enemyOpts := map[string]int{
+		"A": 1,
+		"B": 2,
+		"C": 3,
+	}
+
+	if _, isEnemyMoveValid := enemyOpts[enemyInput]; isEnemyMoveValid == false {
+		log.Fatal("Error enemy invalid move")
+		return 0
+	}
+
+	strategy := map[string]int{
+		"X": Lose,
+		"Y": Draw,
+		"Z": Win,
+	}
+
+	playerStrategy, exists := strategy[playerInput]
+
+	if exists == false {
+		log.Fatal("Error invalid player move")
+		return 0
+	}
+
+	neededRockStrategyMove := map[int]int {
+		Win:paper,
+		Draw:rock,
+		Lose:scissors,
+	}
+
+	neededPaperStrategyMove := map[int]int {
+		Win:scissors,
+		Draw:paper,
+		Lose:rock,
+	}
+
+	neededScissorsStrategyMove := map[int]int {
+		Win:rock,
+		Draw:scissors,
+		Lose:paper,
+	}
+
+	result := 0
+
+	switch enemyInput {
+		case "A":
+			result = playerStrategy + neededRockStrategyMove[playerStrategy]
+		case "B":
+			result = playerStrategy + neededPaperStrategyMove[playerStrategy]			
+		case "C":
+			result = playerStrategy + neededScissorsStrategyMove[playerStrategy]
+
+	}
+
+	return result
+}
+
+func normalRockPaperScissors(enemyInput string, playerInput string) (int){
+	const (
+		Win int = 6
+		Lose    = 0
+		Draw    = 3
+	)
+
+	const (
+		rock =  1
+		paper = 2
+		scissors = 3
 	)
 	
 	enemyOpts := map[string]int{
