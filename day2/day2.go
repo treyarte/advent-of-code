@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
+	"strings"
 )
 
 /**
@@ -43,12 +46,39 @@ RockPaperScissorGame
 
 var pl = fmt.Println
 
-func main() {
-	totalScore := 0
+var totalScore int
 
-	totalScore = RockPaperScissorGame("C", "X")
+func main() {
+	totalScore = 0
+	
+	ReadFile()
 
 	pl(totalScore)
+}
+
+func OnError(err error) {
+	if(err != nil) {
+		panic(err)
+	}
+}
+
+func ReadFile() {	 
+	 file, err := os.Open("rock-paper-scissors-strategy.txt")
+	 OnError(err)
+	 defer file.Close()
+
+	 scanner := bufio.NewScanner(file)
+
+	 for scanner.Scan() {
+		line := scanner.Text()
+		
+		arr := strings.Split(line, " ")
+		
+		enemyInput := arr[0]
+		playerInput := arr[1]
+
+		totalScore += RockPaperScissorGame(enemyInput, playerInput)
+	 }
 }
 
 func RockPaperScissorGame(enemyInput string, playerInput string) (int) {
