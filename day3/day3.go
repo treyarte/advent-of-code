@@ -54,6 +54,14 @@ func main() {
 		listOfBackPacks	= append(listOfBackPacks,text)
 	}
 
+	getSumOfPrioritiesInBackpacks(listOfBackPacks)
+
+	sum := day3Part2.GetGroupUniqueBadgeSum(listOfBackPacks)
+
+	pl(sum)
+}
+
+func getSumOfPrioritiesInBackpacks(listOfBackPacks []string ) {
 	alphaChars := day3Part2.CreatePriorityValues()
 
 	var total int = 0
@@ -75,6 +83,5 @@ func main() {
 			} 
 		}
 	}
-	pl(total)
-
+	// pl(total)
 }
