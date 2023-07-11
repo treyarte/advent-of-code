@@ -75,6 +75,73 @@ func main() {
 		arrOfElfPairs = append(arrOfElfPairs, pairObj)
 	}
 
+	numOfFits = GetNumOfPairFits(arrOfElfPairs);
+
+	numberOfOverlaps := GetNumOfOverlaps(arrOfElfPairs)
+
+	pl(numberOfOverlaps)
+	
+	pl(numOfFits)
+}
+
+/**
+	- Take the pair 1
+	- if pair 1 index is equal to pair 2 index 1
+		- we have an overlap
+	- if it is greater than pair 2
+		- focus on pair 1
+		- is pair1 index 1 greater than pair2 index 2
+			- if equal we have an overlap
+			- if less than we do not have a match
+			- if greater than we have overlap
+	- focus on pair 2
+	 - take pair 1 index 2
+	 - check if pair 1 index 2 is less than pair 2 index 1
+	 	- if equal to then we have an overlap
+		- if less than we do not have an overlap
+		- if Greater than then check index 2 of pair 2
+			- if greater than index two we dont have a match
+			- if less than then we have a match
+	-
+	
+**/
+func GetNumOfOverlaps(arrOfElfPairs []pairOfElves)(int) {
+	var numOfOverlaps int = 0
+
+	for _, val := range arrOfElfPairs {
+		pair1 := val.pair1
+		pair2 := val.pair2
+
+		if pair1[0] == pair2[0] {
+			numOfOverlaps++
+			continue
+		}
+
+		if pair1[0] > pair2[0] {
+			if pair1[0] <= pair2[1] {
+				numOfOverlaps++
+				continue
+			}
+		}
+
+		if pair1[0] < pair2[0] {
+			if pair1[1] == pair2[0] {
+				numOfOverlaps++
+				continue
+			}
+
+			if pair1[1] > pair2[0] {
+				numOfOverlaps++
+				continue
+			}
+		}
+	}
+	return numOfOverlaps
+}
+
+func GetNumOfPairFits(arrOfElfPairs []pairOfElves) (int) {
+	var numOfFits int = 0
+
 	for _, val := range arrOfElfPairs {
 		pair1 := val.pair1
 		pair2 := val.pair2
@@ -97,11 +164,9 @@ func main() {
 				continue
 			}
 		}
-
-
 	}
 
-	pl(numOfFits)
+	return numOfFits
 }
 
 func ConvertArrStrToIntArr(strArr []string) ([2] int) {
